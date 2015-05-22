@@ -7,9 +7,9 @@ angular.module('starter')
 		$scope.$apply();
 	});
 
-	$scope.urlForImage = function(imagemName){
+	$scope.urlForImage = function(imageName){
 		var trueOrigin = cordova.file.dataDirectory + imageName;
-		return trueOrigin;
+    return trueOrigin;
 	}
 
 	$scope.addMedia = function(){
@@ -26,12 +26,14 @@ angular.module('starter')
 		});
 	}
 
-	$scope.addImage = function (type){
-		$scope.hideSheet();
-		ImageService.handleMediaDialog(type).then(function(){
-			$scope.$apply();
-		});
-	}
+
+  $scope.addImage = function(type) {
+    $scope.hideSheet();
+    ImageService.handleMediaDialog(type).then(function() {
+      $scope.$apply();
+    });
+  }
+
 
 	$scope.sendEmail = function() {
     if ($scope.images != null && $scope.images.length > 0) {

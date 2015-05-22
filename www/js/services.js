@@ -2,10 +2,10 @@ angular.module('starter')
 
 .factory('FileService', function(){
 	var images;
-	var IMAGE_STRORAGE_KEY = 'images';
+	var IMAGE_STORAGE_KEY = 'images';
 
 	function getImages(){
-		var img = window.localStorage.getItem(IMAGE_STRORAGE_KEY);
+		var img = window.localStorage.getItem(IMAGE_STORAGE_KEY);
 		if(img){
 			images = JSON.parse(img);
 		}
@@ -18,7 +18,7 @@ angular.module('starter')
 
 	function addImage(img){
 		images.push(img);
-		window.localStrorage.setItem(IMAGE_STRORAGE_KEY, JSON.stringfy(images));
+		window.localStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(images));
 	};
 
 	return {
@@ -58,28 +58,31 @@ angular.module('starter')
 			sourceType: source,
 			allowEdit: false,
 			encodingType: Camera.EncodingType.JPEG,
-			popoverOptions: CamerPopoverOptions,
+			popoverOptions: CameraPopoverOptions,
 			saveToPhotoAlbum: false
 		};
 	}
 
-	function saveMedia(type){
-		return $q(function (resolve, reject){
-			var options = optionsForType(type);
+ 	function saveMedia(type) {
+    	return $q(function(resolve, reject) {
+      	var options = optionsForType(type);
+ 		
 
-			$cordovaCamera.getPicture(options).then(function(imageURL){
-				var name = imageUrl.substr(0, image.Url.lastIndexOf('/') + 1);
-				var newName = makeid() + name;
-				$cordovaFile.copyFile (namePath, name, cordova.file.dataDirectory, newName)
-					.then(function(info){
-						FileService.storeImage(newName);
-						resolve();
-					}, function (e){
-						reject();
-					});
-			});
-		});
-	}
+      	$cordovaCamera.getPicture(options).then(function(imageUrl) {
+	        var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
+	        var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
+	        var newName = makeid() + name;
+	        $cordovaFile.copyFile(namePath, name, cordova.file.dataDirectory, newName)
+	          .then(function(info) {
+	            FileService.storeImage(newName);
+	            resolve();
+	          }, function(e) {
+	            reject();
+	          });
+	      	});
+	    })
+  	}
+
 
 	return {
 		handleMediaDialog: saveMedia
